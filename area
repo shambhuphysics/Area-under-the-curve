@@ -1,0 +1,52 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Function to calculate the integral under the curve
+def calculate_integral(m0, c0, m1, c1):
+    # Calculate the x-coordinate of the intersection point of the two lines
+    x = (c1 - c0) / (m0 - m1)
+    
+    # Check if the intersection point is within the range [0, 1]
+    if 0 <= x <= 1:
+        # Calculate integral under the curve
+        In = (c0 * x + (m0 * x**2) / 2) + (c1 * (1 - x)) - ((1 - x)**2 * m1 / 2)
+    else:
+        # If intersection point is outside the range, take average of y-values of endpoints
+        In = (c0 + c1) / 2
+    print(x)
+    return In
+
+# Prompt user to input parameters for the first line equation y0 = m0 x + c0
+m0 = -0.06766240 
+c0 =  2.38489051  
+
+# Prompt user to input parameters for the second line equation y1 = m1 x + c1
+m1 =  0.06394680
+c1 = 2.26375361
+avg=(c0+c1)/2
+print(avg)
+# Calculate the integral under the curve
+integral = calculate_integral(m0, c0, m1, c1)
+print("Integral (I) =", integral)
+
+# Generate x values from 0 to 1
+x_values = np.linspace(0, 1, 100)
+
+# Calculate y values for each line
+y0_values = m0 * x_values + c0        #x=0.05904287y+2.19935638 
+y1_values = m1 * x_values + c1
+
+# Plot the lines and shade the area under the curve
+plt.plot(x_values, y0_values, label='y0 = {:.2f}x + {:.2f}'.format(m0, c0))
+plt.plot(x_values, y1_values, label='y1 = {:.2f}x + {:.2f}'.format(m1, c1))
+plt.fill_between(x_values, np.minimum(y0_values, y1_values), np.maximum(y0_values, y1_values), color='gray', alpha=0.5)
+
+# Mark the intersection point
+plt.scatter((c1 - c0) / (m0 - m1), m0 * ((c1 - c0) / (m0 - m1)) + c0, color='red', label='Intersection')
+
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('Integral under the Curve')
+plt.legend()
+plt.grid(True)
+plt.show()
